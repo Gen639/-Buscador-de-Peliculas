@@ -3,14 +3,18 @@ const moviesContainer = document.querySelector("#moviesContainer");
 const formSearch = document.getElementById("form");
 const searchInput = document.getElementById("searchId");
 
-let genreList = {};
+let genreListObj = {};
 
 const getGenre = (genre_ids) => {
-  const genreNames = genre_ids.map((genre_id) => {
-    const genre = genreList.find((item) => item.id === genre_id);
-    return genre ? genre.name : "unknown genre";
+  const getGenresArray = genre_ids.map((genre_id) => {
+    const genresContainedinTheObj = genreListObj.find(
+      (item) => item.id === genre_id
+    );
+    if (genresContainedinTheObj) {
+      return genresContainedinTheObj.name;
+    }
   });
-  return genreNames.join(", ");
+  return getGenresArray.join(", ");
 };
 
 const showMovies = (movies) => {
@@ -54,8 +58,8 @@ const allGenreObj = async () => {
     const res = await axios.get(
       `https://api.themoviedb.org/3/genre/movie/list?language=en&api_key=${apiKey}`
     );
-    genreList = res.data.genres;
-    console.log(genreList);
+    genreListObj = res.data.genres;
+    console.log(genreListObj);
   } catch (error) {
     console.error(error);
   }
